@@ -30,7 +30,7 @@ module.exports = class Excel extends Client {
         }} })
         this.setMaxListeners(Infinity)
        this.cluster = new ClusterClient(this);
-        this.config = require(`${process.cwd()}/config.json`)
+        this.config = this.loadConfig()
         this.logger = require('./logger')
 		this.ready = false
         this.rateLimits = new Collection()
