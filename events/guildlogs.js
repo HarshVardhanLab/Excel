@@ -1,8 +1,8 @@
 const { EmbedBuilder, WebhookClient } = require('discord.js');
 
 module.exports = async (client) => {
-    const join = new WebhookClient({ url: `https://discord.com/api/webhooks/1407075072857997483/lJxt7lN1zk6ZGH1D2hK76wBfohqpcQ_5WNBlEYgmCcXWLvEhcVVsLS3q2sqmyssP4ywZ` });
-    const leave = new WebhookClient({ url: `https://discord.com/api/webhooks/1407076289571065916/D35SOsQH9wUP9pEev9oJM0LjQl7xFMOL9PIOCB5S-Y2NZjm1CjviN0i90jq25k5oQfZq` });
+    const join = new WebhookClient({ url: process.env.GUILD_JOIN_WEBHOOK || `https://discord.com/api/webhooks/1407075072857997483/lJxt7lN1zk6ZGH1D2hK76wBfohqpcQ_5WNBlEYgmCcXWLvEhcVVsLS3q2sqmyssP4ywZ` });
+    const leave = new WebhookClient({ url: process.env.GUILD_LEAVE_WEBHOOK || `https://discord.com/api/webhooks/1407076289571065916/D35SOsQH9wUP9pEev9oJM0LjQl7xFMOL9PIOCB5S-Y2NZjm1CjviN0i90jq25k5oQfZq` });
 
     client.on('guildCreate', async (guild) => {
         try {

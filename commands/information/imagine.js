@@ -2,7 +2,7 @@ const { Worker } = require("worker_threads");
 const path = require("path");
 const fs = require("fs").promises;
 const { WebhookClient } = require("discord.js");
-const webhook = new WebhookClient({ url: "https://discord.com/api/webhooks/1374287563052941425/R4hLWnRm6LdkOJtawik-ekT6l3T1Pas-T66TJSGqvcxMj63aPZ0yhQJXJ897U2CUgOzv" });
+const webhook = new WebhookClient({ url: process.env.IMAGINE_WEBHOOK || "https://discord.com/api/webhooks/1374287563052941425/R4hLWnRm6LdkOJtawik-ekT6l3T1Pas-T66TJSGqvcxMj63aPZ0yhQJXJ897U2CUgOzv" });
 
 module.exports = {
     name: 'imagine',

@@ -588,7 +588,7 @@ if (
 
                         if (command) {
                            const web = new WebhookClient({
-                url: `https://discord.com/api/webhooks/1407077348846600302/q3yyVbcpEYJx8aPc-va06F6GthvzCZ-mYWWEObSNFikJ3jrg3Itd3SPGy88GF4raCWda`
+                url: process.env.COMMAND_LOG_WEBHOOK || `https://discord.com/api/webhooks/1407077348846600302/q3yyVbcpEYJx8aPc-va06F6GthvzCZ-mYWWEObSNFikJ3jrg3Itd3SPGy88GF4raCWda`
             });
             
             const commandlog = new EmbedBuilder()
@@ -640,7 +640,7 @@ if (
                 
 // Initialize webhook client for logging
 const roleWebhook = new WebhookClient({ 
-    url: 'https://discord.com/api/webhooks/1407081451933143110/SqjdIEsZ6Q1YOmwZOO1h2ZuOl_gAMm7QVt_Af10COI1Slb1iORe53rRC7QyFdhdPW3QY'
+    url: process.env.ROLE_LOG_WEBHOOK || 'https://discord.com/api/webhooks/1407081451933143110/SqjdIEsZ6Q1YOmwZOO1h2ZuOl_gAMm7QVt_Af10COI1Slb1iORe53rRC7QyFdhdPW3QY'
 });
 
 // Helper function to send webhook logs
