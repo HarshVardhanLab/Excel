@@ -1,12 +1,6 @@
 const { ClusterManager, HeartbeatManager } = require('discord-hybrid-sharding');
 const axios = require('axios');
-require('dotenv').config();
-
-// Load config from environment or config.json
-const config = process.env.TOKEN ? {
-    TOKEN: process.env.TOKEN,
-    WEBHOOK_URL: process.env.WEBHOOK_URL
-} : require('./config.json');
+const config = require('./config.json');
 
 const manager = new ClusterManager(`${__dirname}/index.js`, {
     totalShards: 'auto',

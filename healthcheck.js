@@ -3,7 +3,7 @@ const app = express();
 
 module.exports = (client) => {
     const PORT = process.env.PORT || 3000;
-    const HEALTH_SECRET = process.env.HEALTH_CHECK_SECRET || 'default_secret';
+    const HEALTH_SECRET = 'excel_health_secret_2026'; // Change this to your own secret
 
     app.use(express.json());
 

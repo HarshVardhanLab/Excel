@@ -10,31 +10,5 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.18.0
-      - key: TOKEN
-        sync: false
-      - key: MONGO_DB
-        sync: false
-      - key: WEBHOOK_URL
-        sync: false
-      - key: ERROR_WEBHOOK
-        sync: false
-      - key: RATELIMIT_WEBHOOK
-        sync: false
-      - key: COMMAND_LOG_WEBHOOK
-        sync: false
-      - key: ROLE_LOG_WEBHOOK
-        sync: false
-      - key: REDIS_URL
-        sync: false
       - key: PORT
         value: 3000
-      - key: OWNER_IDS
-        sync: false
-      - key: ADMIN_IDS
-        sync: false
-      - key: PREMIUM_IDS
-        sync: false
-      - key: NO_PREFIX_IDS
-        sync: false
-      - key: HEALTH_CHECK_SECRET
-        generateValue: true

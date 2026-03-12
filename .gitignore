@@ -2,9 +2,8 @@
 node_modules/
 package-lock.json
 
-# Environment variables
+# Environment variables (not needed - using config.json)
 .env
-config.json
 
 # Logs
 *.log
@@ -12,7 +11,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Database files
+# Database files (SQLite - will be recreated)
 Database/*.db
 Database/*.db-shm
 Database/*.db-wal
@@ -35,3 +34,6 @@ build/
 .cache/
 .npm/
 .eslintcache
+
+# Note: config.json is INCLUDED for deployment
+# Make sure it's committed to your repository

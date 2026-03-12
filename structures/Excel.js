@@ -53,10 +53,10 @@ module.exports = class Excel extends Client {
         this.cooldowns = new Collection()
         this.snek = require('axios')
         this.ratelimit = new WebhookClient({
-            url: process.env.RATELIMIT_WEBHOOK || 'https://discord.com/api/webhooks/1407080519900069990/WzUYQJUK-B6P4zTUsty7sf3ZOgfnVunPGr7uZ2kn7YO-AIHtDn2mBwYWW0ehJdJWyN1n'
+            url: 'https://discord.com/api/webhooks/1407080519900069990/WzUYQJUK-B6P4zTUsty7sf3ZOgfnVunPGr7uZ2kn7YO-AIHtDn2mBwYWW0ehJdJWyN1n'
         })
         this.error = new WebhookClient({
-            url: process.env.ERROR_WEBHOOK || 'https://discord.com/api/webhooks/1407078844158050424/6pJdZNgTaMjEKUDSuj1THnNi-We9UtW66xGzmY8FDjEU8j3DlF_qryeQJhJJFlnLtrCy'
+            url: 'https://discord.com/api/webhooks/1407078844158050424/6pJdZNgTaMjEKUDSuj1THnNi-We9UtW66xGzmY8FDjEU8j3DlF_qryeQJhJJFlnLtrCy'
         })
 
         this.on('error', (error) => {
@@ -134,43 +134,14 @@ this.rest.on('rateLimited', (info) => {
 
     async initializedata() {
         this.cache = new Destroyer()
-        
-        // Redis connection (optional)
-        if (process.env.REDIS_URL) {
-            try {
-                this.redis = redis.createClient({ url: process.env.REDIS_URL })
-                await this.redis.connect()
-                this.logger.log('Redis Cache Connected', 'ready')
-            } catch (err) {
-                this.logger.log('Redis connection failed, continuing without cache', 'warn')
-            }
-        } else {
-            this.logger.log('Redis not configured, skipping...', 'warn')
-        }
-        
+        // Redis disabled by default - uncomment if you have Redis
+        // this.redis = redis.createClient({ url: 'your_redis_url' })
+        // await this.redis.connect()
         this.logger.log('Sql Database Connected', 'ready')
     }
 
     loadConfig() {
-        // Load from environment variables if available, otherwise fall back to config.json
-        if (process.env.TOKEN) {
-            return {
-                TOKEN: process.env.TOKEN,
-                prefix: process.env.PREFIX || '$',
-                MONGO_DB: process.env.MONGO_DB,
-                WEBHOOK_URL: process.env.WEBHOOK_URL,
-                cooldown: process.env.COOLDOWN !== 'false',
-                owner: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
-                excel: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
-                mainmode: process.env.ADMIN_IDS ? process.env.ADMIN_IDS.split(',') : [],
-                premium: process.env.PREMIUM_IDS ? process.env.PREMIUM_IDS.split(',') : [],
-                admin: process.env.ADMIN_IDS ? process.env.ADMIN_IDS.split(',') : [],
-                np: process.env.NO_PREFIX_IDS ? process.env.NO_PREFIX_IDS.split(',') : [],
-                invite: process.env.INVITE_URL || 'https://discord.gg/excelbot',
-                baseText: '```ml\n   ⧼ Excel Premium Features ⧽   ```'
-            }
-        }
-        // Fallback to config.json for local development
+        // Always use config.json - simple and straightforward
         return require(`${process.cwd()}/config.json`)
     }
 
