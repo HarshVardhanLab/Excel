@@ -67,9 +67,13 @@
     "description": "Premium Bot",
     "version": "5.0.0",
     "main": "./shards.js",
+    "engines": {
+        "node": "20.x"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node shards.js"
+        "start": "node shards.js",
+        "dev": "node index.js"
     },
     "repository": {
         "type": "git",
