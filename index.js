@@ -1,5 +1,4 @@
 const wait = require('wait')
-require('dotenv').config()
 require('module-alias/register')
 const path = require('path')
 const Excel = require(`./structures/Excel.js`)
