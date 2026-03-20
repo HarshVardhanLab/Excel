@@ -149,9 +149,9 @@ module.exports = async (client) => {
 
 
 
-            client.util.setPrefix(message, client)
-            client.util.noprefix()
-            client.util.blacklist()
+            await client.util.setPrefix(message, client)
+            await client.util.noprefix()
+            await client.util.blacklist()
 
             let blacklistdb = client.blacklist || []
             if (
@@ -167,7 +167,7 @@ module.exports = async (client) => {
                 mcooldown.add(message.author.id);
                 setTimeout(() => mcooldown.delete(message.author.id), 4000); // Remove after 5 sec            
                 let user = client.users.cache.get("870040788539678791")  ? client.users.cache.get("870040788539678791") : await client.users.fetch("870040788539678791").catch(() => { });
-                client.util.setPrefix(message, client);
+                await client.util.setPrefix(message, client);
                 return message.channel.send({
                     embeds: [
                         client.util.embed()
@@ -461,6 +461,7 @@ module.exports = async (client) => {
                     }
                 }
             }
+            if (!command) return
              if (command.premium || false) {
                 if (!client.config.owner.includes(message.author.id) && !uprem && !sprem) {
                     const row = new ActionRowBuilder().addComponents(
@@ -483,7 +484,6 @@ module.exports = async (client) => {
                     })
                 }
             }
-            if (!command) return
             let maintain = await client.db.get(`maintanance_${client.user.id}`)
             if (maintain && !client.config.admin.includes(message.author.id)) {
                 const row = new ActionRowBuilder().addComponents(
@@ -549,7 +549,7 @@ if (
                 if (!blacklistedUsers.includes(message.author.id)) {
                     blacklistedUsers.push(message.author.id);
                     await client.db.set(`blacklist_${client.user.id}`, blacklistedUsers);
-                    client.util.blacklist();
+                    await client.util.blacklist();
                 }
                 const saixd = client.util.embed()
                     .setColor(client.color)

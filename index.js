@@ -9,7 +9,9 @@ const healthcheck = require('./healthcheck')
     await client.initializeMongoose()
     await client.initializedata()
     await wait(3000);
-    (await client.loadEvents() - (await client.loadlogs()) - (await client.SQL()))
+    await client.loadEvents()
+    await client.loadlogs()
+    await client.SQL()
     await client.loadMain()
     await client.login(client.config.TOKEN)
     

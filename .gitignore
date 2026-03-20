@@ -35,5 +35,5 @@ build/
 .npm/
 .eslintcache
 
-# Note: config.json is INCLUDED for deployment
-# Make sure it's committed to your repository
+# Config file contains secrets - never commit
+config.json
