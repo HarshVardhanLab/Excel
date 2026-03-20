@@ -7,11 +7,27 @@ echo ""
 # Exit on any error
 set -e
 
-# ─── 1. System Update ────────────────────────────────────────────────────────
-echo "� Updating system packages..."
-sudo apt-get update -y && sudo apt-get upgrade -y
+# ─── 1. Add swap FIRST to prevent OOM kills ──────────────────────────────────
+echo "💾 Setting up swap space (2GB)..."
+if [ ! -f /swapfile ]; then
+    sudo fallocate -l 2G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    echo "✅ Swap enabled"
+else
+    sudo swapon /swapfile 2>/dev/null || true
+    echo "✅ Swap already exists"
+fi
+free -h
 
-# ─── 2. Install Node.js 20.x ─────────────────────────────────────────────────
+# ─── 2. System Update ────────────────────────────────────────────────────────
+echo ""
+echo "� U pdating system packages..."
+sudo apt-get update -y
+
+# ─── 3. Install Node.js 20.x ─────────────────────────────────────────────────
 echo ""
 echo "📦 Installing Node.js 20.x..."
 if ! command -v node &> /dev/null || [[ ! "$(node -v)" =~ ^v20\. ]]; then
@@ -22,9 +38,9 @@ else
     echo "✅ Node.js $(node -v) already installed"
 fi
 
-# ─── 3. Install canvas/native build dependencies ─────────────────────────────
+# ─── 4. Install native build dependencies ────────────────────────────────────
 echo ""
-echo "🛠️  Installing native build dependencies (canvas, sqlite3)..."
+echo "🛠️  Installing native build dependencies..."
 sudo apt-get install -y \
     build-essential \
     python3 \
@@ -42,7 +58,7 @@ sudo apt-get install -y \
     curl
 echo "✅ Native dependencies installed"
 
-# ─── 4. Install PM2 globally ─────────────────────────────────────────────────
+# ─── 5. Install PM2 globally ─────────────────────────────────────────────────
 echo ""
 echo "⚙️  Installing PM2 process manager..."
 if ! command -v pm2 &> /dev/null; then
@@ -52,25 +68,24 @@ else
     echo "✅ PM2 already installed"
 fi
 
-# ─── 5. Install project dependencies ─────────────────────────────────────────
+# ─── 6. Install project dependencies ─────────────────────────────────────────
 echo ""
 echo "📦 Installing project dependencies..."
-npm install --legacy-peer-deps
+npm install --legacy-peer-deps --no-audit --no-fund
 
-if [ $? -eq 0 ]; then
-    echo "✅ Dependencies installed successfully"
-else
+if [ $? -ne 0 ]; then
     echo "❌ npm install failed, retrying with --force..."
-    npm install --legacy-peer-deps --force
+    npm install --legacy-peer-deps --force --no-audit --no-fund
 fi
+echo "✅ Dependencies installed successfully"
 
-# ─── 6. Ensure Database directory exists ─────────────────────────────────────
+# ─── 7. Ensure Database directory exists ─────────────────────────────────────
 echo ""
 echo "📁 Ensuring Database directory exists..."
 mkdir -p Database
 echo "✅ Database directory ready"
 
-# ─── 7. Verify config.json ───────────────────────────────────────────────────
+# ─── 8. Verify config.json ───────────────────────────────────────────────────
 echo ""
 echo "🔍 Verifying config.json..."
 if [ ! -f "config.json" ]; then
@@ -80,7 +95,7 @@ else
     echo "✅ config.json found"
 fi
 
-# ─── 8. Start bot with PM2 ───────────────────────────────────────────────────
+# ─── 9. Start bot with PM2 ───────────────────────────────────────────────────
 echo ""
 echo "🤖 Starting bot with PM2..."
 pm2 delete excel-bot 2>/dev/null || true
@@ -96,9 +111,9 @@ echo ""
 echo "✅ EC2 Setup complete!"
 echo ""
 echo "Useful commands:"
-echo "  pm2 status          → check bot status"
-echo "  pm2 logs excel-bot  → view live logs"
+echo "  pm2 status            → check bot status"
+echo "  pm2 logs excel-bot    → view live logs"
 echo "  pm2 restart excel-bot → restart bot"
-echo "  pm2 stop excel-bot  → stop bot"
+echo "  pm2 stop excel-bot    → stop bot"
 echo ""
 echo "Health check: curl http://localhost:3000/health"
